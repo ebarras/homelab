@@ -101,11 +101,6 @@ services:
 
 volumes:
   qbittorrent-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
-      device: ":/volume1/docker/qbittorrent"
   torrent-downloads:
     driver: local
     driver_opts:
@@ -113,35 +108,10 @@ volumes:
       o: addr=192.168.1.112,rw,vers=4.1
       device: ":/volume1/media/"
   radarr-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
-      device: ":/volume1/docker/radarr"
   jackett-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
-      device: ":/volume1/docker/jackett"
   jackett-blackhole:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
-      device: ":/volume1/docker/jackett/Blackhole"
   sonarr-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
-      device: ":/volume1/docker/sonarr"
   overseerr-config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
-      device: ":/volume1/docker/overseerr"
 
 networks:
   mynetwork:
