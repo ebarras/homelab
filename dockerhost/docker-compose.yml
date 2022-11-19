@@ -97,7 +97,7 @@ services:
     volumes:
       - overseerr-config:/app/config
     restart: unless-stopped
-
+    
 
 volumes:
   qbittorrent-config:
