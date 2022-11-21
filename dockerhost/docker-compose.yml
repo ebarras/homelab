@@ -37,6 +37,7 @@ services:
     volumes:
       - qbittorrent-config:/config
       - torrent-downloads:/downloads
+    restart: "unless-stopped"
 
   radarr:
     container_name: radarr
