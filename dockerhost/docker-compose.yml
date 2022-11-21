@@ -90,6 +90,8 @@ services:
   overseerr:
     image: sctx/overseerr:latest
     container_name: overseerr
+    networks:
+      - mynetwork
     environment:
       - LOG_LEVEL=debug
       - TZ=America/Chicago
