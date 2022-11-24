@@ -101,6 +101,20 @@ services:
       - overseerr-config:/app/config
     restart: unless-stopped
     
+  flame:
+    image: pawelmalak/flame
+    container_name: flame
+    networks:
+      - mynetwork
+    volumes:
+      - flame-data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock # optional but required for Docker integration
+    ports:
+      - 80:5005
+    environment:
+      - PASSWORD=${FLAME_PASSWORD}
+    restart: unless-stopped
+    
 
 volumes:
   qbittorrent-config:
@@ -115,6 +129,7 @@ volumes:
   jackett-blackhole:
   sonarr-config:
   overseerr-config:
+  flame-data:
 
 networks:
   mynetwork:
