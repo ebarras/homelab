@@ -36,8 +36,24 @@ services:
       - WEBUI_PORT=5080
     volumes:
       - qbittorrent-config:/config
-      - torrent-downloads:/downloads
+      - media-downloads:/downloads
     restart: "unless-stopped"
+  
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    networks:
+      - mynetwork
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=America/Chicago
+    volumes:
+      - /path/to/data:/config
+      - media-downloads:/downloads
+    ports:
+      - 8080:8080
+    restart: unless-stopped
 
   radarr:
     container_name: radarr
@@ -52,7 +68,7 @@ services:
       - 7878:7878
     volumes:
       - radarr-config:/config
-      - torrent-downloads:/downloads
+      - media-downloads:/downloads
     restart: "unless-stopped"
 
   jackett:
@@ -82,7 +98,7 @@ services:
       - TZ=America/Chicago
     volumes:
       - sonarr-config:/config
-      - torrent-downloads:/downloads
+      - media-downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -114,22 +130,38 @@ services:
     environment:
       - PASSWORD=${FLAME_PASSWORD}
     restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=America/Chicago
+    volumes:
+      - lidarr-config:/config
+      - media-downloads:/downloads
+    ports:
+      - 8686:8686
+    restart: unless-stopped
     
 
 volumes:
   qbittorrent-config:
-  torrent-downloads:
+  media-downloads:
     driver: local
     driver_opts:
       type: nfs
       o: addr=192.168.1.112,rw,vers=4.1
       device: ":/volume1/media/"
+  sabnzbd-config:
   radarr-config:
   jackett-config:
   jackett-blackhole:
   sonarr-config:
   overseerr-config:
   flame-data:
+  lidarr-config:
 
 networks:
   mynetwork:
