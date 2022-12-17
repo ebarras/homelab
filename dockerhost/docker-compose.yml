@@ -134,6 +134,8 @@ services:
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
+    networks:
+      - mynetwork
     environment:
       - PUID=1026
       - PGID=100
@@ -143,6 +145,15 @@ services:
       - media-downloads:/downloads
     ports:
       - 8686:8686
+    restart: unless-stopped
+
+  watchtower:      
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    networks:
+      - mynetwork
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     
 
