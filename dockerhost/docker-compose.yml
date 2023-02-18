@@ -156,6 +156,23 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+  
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    networks:
+      - mynetwork
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=America/Chicago
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
+    volumes:
+      - calibre-web-config:/config
+      - media-books:/books
+    ports:
+      - 8083:8083
+    restart: unless-stopped
     
 
 volumes:
@@ -166,6 +183,12 @@ volumes:
       type: nfs
       o: addr=192.168.1.112,rw,vers=4.1
       device: ":/volume1/media/"
+  media-books:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.112,rw,vers=4.1
+      device: ":/volume1/media/Books/"
   sabnzbd-config:
   radarr-config:
   jackett-config:
@@ -174,6 +197,7 @@ volumes:
   overseerr-config:
   flame-data:
   lidarr-config:
+  calibre-web-config:        
 
 networks:
   mynetwork:
