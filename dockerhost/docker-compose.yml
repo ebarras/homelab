@@ -173,6 +173,26 @@ services:
     ports:
       - 8083:8083
     restart: unless-stopped
+
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: unless-stopped
+    hostname: '192.168.1.189'
+    networks:
+      - mynetwork
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://192.168.1.189'
+        gitlab_rails['initial_root_password'] = "${GITLAB_PASSWORD}"
+    ports:
+      - '6080:80'
+      - '6443:443'
+      - '6022:22'
+    volumes:
+      - gitlab-config:/etc/gitlab
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-data:/var/opt/gitlab
     
 
 volumes:
@@ -189,6 +209,12 @@ volumes:
       type: nfs
       o: addr=192.168.1.112,rw,vers=4.1
       device: ":/volume1/media/Books/"
+  gitlab-data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.112,rw,vers=4.1
+      device: ":/volume1/media/Books/"
   sabnzbd-config:
   radarr-config:
   jackett-config:
@@ -198,6 +224,8 @@ volumes:
   flame-data:
   lidarr-config:
   calibre-web-config:        
+  gitlab-config:
+  gitlab-logs:
 
 networks:
   mynetwork:
