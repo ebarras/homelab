@@ -183,11 +183,13 @@ services:
       - mynetwork
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://192.168.1.189'
+        external_url 'http://192.168.1.189:6080'
+        nginx['listen_port'] = 6080
+        nginx['listen_https'] = false
         gitlab_rails['initial_root_password'] = "${GITLAB_PASSWORD}"
+
     ports:
-      - '6080:80'
-      - '6443:443'
+      - '6080:6080'
       - '6022:22'
     volumes:
       - gitlab-config:/etc/gitlab
@@ -214,7 +216,7 @@ volumes:
     driver_opts:
       type: nfs
       o: addr=192.168.1.112,rw,vers=4.1
-      device: ":/volume1/media/Books/"
+      device: ":/volume1/media/Gitlab/"
   sabnzbd-config:
   radarr-config:
   jackett-config:
