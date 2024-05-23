@@ -174,27 +174,50 @@ services:
       - 8083:8083
     restart: unless-stopped
 
-  gitlab:
-    image: gitlab/gitlab-ce:latest
-    container_name: gitlab
-    restart: unless-stopped
-    hostname: '192.168.1.189'
+  decluttarr:
+    image: ghcr.io/manimatter/decluttarr:latest
+    container_name: decluttarr
     networks:
       - mynetwork
+    restart: always
     environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://192.168.1.189:6080'
-        nginx['listen_port'] = 6080
-        nginx['listen_https'] = false
-        gitlab_rails['initial_root_password'] = "${GITLAB_PASSWORD}"
-
-    ports:
-      - '6080:6080'
-      - '6022:22'
-    volumes:
-      - gitlab-config:/etc/gitlab
-      - gitlab-logs:/var/log/gitlab
-      - gitlab-data:/var/opt/gitlab
+      - TZ=America/Chicago
+      - PUID=1000
+      - PGID=1000
+      ## General
+      - LOG_LEVEL=INFO
+      #- TEST_RUN=True
+      #- SSL_VERIFICATION=False
+      ## Features 
+      - REMOVE_TIMER=10
+      - REMOVE_FAILED=True
+      - REMOVE_METADATA_MISSING=True
+      - REMOVE_MISSING_FILES=True     
+      - REMOVE_NO_FORMAT_UPGRADE=True
+      - REMOVE_ORPHANS=True
+      - REMOVE_SLOW=True
+      - REMOVE_STALLED=True
+      - REMOVE_UNMONITORED=True
+      - MIN_DOWNLOAD_SPEED=100
+      - PERMITTED_ATTEMPTS=3
+      - NO_STALLED_REMOVAL_QBIT_TAG=Don't Kill
+      - IGNORE_PRIVATE_TRACKERS=True
+      ## Radarr
+      - RADARR_URL=http://192.168.1.189:7878
+      - RADARR_KEY=${DECLUTTARR_RADARR_KEY}
+      ## Sonarr
+      - SONARR_URL=http://192.168.1.189:8989
+      - SONARR_KEY=${DECLUTTARR_SONARR_KEY}
+      ## Lidarr
+      - LIDARR_URL=http://192.168.1.189:8686
+      - LIDARR_KEY=${DECLUTTARR_LIDARR_KEY}
+      ## Readarr
+      # - READARR_URL=http://readarr:8787
+      # - READARR_KEY=$READARR_API_KEY
+      ## qBittorrent
+      - QBITTORRENT_URL=http://192.168.1.189:5080
+      - QBITTORRENT_USERNAME=${DECLUTTARR_QBITTORRENT_USERNAME}
+      - QBITTORRENT_PASSWORD=${DECLUTTARR_QBITTORRENT_PASSWORD}
     
 
 volumes:
@@ -226,8 +249,8 @@ volumes:
   flame-data:
   lidarr-config:
   calibre-web-config:        
-  gitlab-config:
-  gitlab-logs:
+  #gitlab-config:
+  #gitlab-logs:
 
 networks:
   mynetwork:
