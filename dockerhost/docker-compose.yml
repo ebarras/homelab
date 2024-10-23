@@ -203,19 +203,19 @@ services:
       - NO_STALLED_REMOVAL_QBIT_TAG=Don't Kill
       - IGNORE_PRIVATE_TRACKERS=True
       ## Radarr
-      - RADARR_URL=http://192.168.1.189:7878
+      - RADARR_URL=${APP_URL_BASE}:7878
       - RADARR_KEY=${DECLUTTARR_RADARR_KEY}
       ## Sonarr
-      - SONARR_URL=http://192.168.1.189:8989
+      - SONARR_URL=${APP_URL_BASE}:8989
       - SONARR_KEY=${DECLUTTARR_SONARR_KEY}
       ## Lidarr
-      - LIDARR_URL=http://192.168.1.189:8686
+      - LIDARR_URL=${APP_URL_BASE}:8686
       - LIDARR_KEY=${DECLUTTARR_LIDARR_KEY}
       ## Readarr
       # - READARR_URL=http://readarr:8787
       # - READARR_KEY=$READARR_API_KEY
       ## qBittorrent
-      - QBITTORRENT_URL=http://192.168.1.189:5080
+      - QBITTORRENT_URL=${APP_URL_BASE}:5080
       - QBITTORRENT_USERNAME=${DECLUTTARR_QBITTORRENT_USERNAME}
       - QBITTORRENT_PASSWORD=${DECLUTTARR_QBITTORRENT_PASSWORD}
     
@@ -226,13 +226,13 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
+      o: addr=${NAS_IP},rw,vers=4.1
       device: ":/volume1/media/"
   media-books:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=192.168.1.112,rw,vers=4.1
+      o: addr=${NAS_IP},rw,vers=4.1
       device: ":/volume1/media/Books/"
   sabnzbd-config:
   radarr-config:
